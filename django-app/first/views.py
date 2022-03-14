@@ -26,6 +26,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from lib.get_data import get_data
+from lib.datapiepline import datapiepliner
 
 def main(request):
 	return render(request,'index.html')
@@ -37,7 +38,7 @@ def exportPdfWeather(request):
     return render(request,'cooling.html',dataDictList)
 
 def datapiepline(request):
-    dataDictList = datapiepline()
+    dataDictList = datapiepliner()
     print(dataDictList)
     return render(request,'datapiepline.html',dataDictList)
 

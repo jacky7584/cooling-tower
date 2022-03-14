@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from django.conf.urls import url
-from first.views import sayhello,hello2,hello3,hello4,main,POST_crawl,listone,listall,insert,modify,delete,exportPdfWeather,datapiepline
+from first.views import main,POST_crawl,listone,listall,insert,modify,delete,exportPdfWeather,datapiepline
 urlpatterns = [
     path('admin/', admin.site.urls),
     #hello世界範例1
