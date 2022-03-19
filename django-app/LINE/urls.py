@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from django.conf.urls import url
-from first.views import main,POST_crawl,listone,listall,insert,modify,delete,exportPdfWeather,datapiepline
+from first.views import main,POST_crawl,exportPdfWeather,datapiepline,uploadFile
 urlpatterns = [
     path('admin/', admin.site.urls),
     #hello世界範例1
@@ -30,15 +30,12 @@ urlpatterns = [
     path('',main),                 #在首頁下執行main函式
     path('POST_crawl/',POST_crawl), #在POST_crawl頁面執行POST_crawl函式
 
-    #database測試
-    url(r'^listone/$', listone),
-    url(r'^listall/$', listall),
-    url(r'^insert/$', insert),   #新增資料
-    url(r'^modify/$', modify),   #修改資料
-    url(r'^delete/$', delete),   #刪除資料
+
 
     #冰水主機首頁
     path('api/exportPdfWeather/', exportPdfWeather),
     #冰水主機分群分析
     path('api/datapiepline/', datapiepline),
+    #資料上傳處理
+    path("api/uploadFile/", uploadFile, name = "uploadFile"),
 ]

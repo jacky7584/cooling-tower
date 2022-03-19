@@ -28,6 +28,30 @@ from webdriver_manager.chrome import ChromeDriverManager
 from lib.get_data import get_data
 from lib.datapiepline import datapiepliner
 
+from django.shortcuts import render
+from django.views.generic import View
+from django.http import HttpResponse
+from . import models
+
+def uploadFile(request):
+    if request.method == "POST":
+        # Fetching the form data
+        fileTitle = request.POST["fileTitle"]
+        uploadedFile = request.FILES["uploadedFile"]
+
+        # Saving the information in the database
+        document = models.Document(
+            title = fileTitle,
+            uploadedFile = uploadedFile
+        )
+        document.save()
+
+    documents = models.Document.objects.all()
+
+    return render(request, "datapiepline.html", context = {
+        "files": documents
+    })
+
 def main(request):
 	return render(request,'index.html')
 
@@ -41,6 +65,8 @@ def datapiepline(request):
     dataDictList = datapiepliner()
     print(dataDictList)
     return render(request,'datapiepline.html',dataDictList)
+
+
 
 
 def POST_crawl(request):
@@ -98,43 +124,4 @@ def POST_crawl(request):
 
 	return render(request,'result.html',locals()) # render的最後面是返回一個dict,locals()函數會將這個def中的list包成一個dict反值,這邊唯一的list就是text
 
-from first.models import student
 
-
-def listone(request): 
-    try: 
-        unit = student.objects.get(cName="李采茜") #讀取一筆資料
-    except:
-        errormessage = " (讀取錯誤!)"
-    return render(request, "listone.html", locals())
-
-def listall(request):  
-    students = student.objects.all().order_by('id')  
-    #讀取資料表, 依 id 遞增排序(欄位前加入負號-id代表遞減排序)
-    return render(request, "listall.html", locals())
-
-def insert(request):  #新增資料
-    cName = '林三和'
-    cSex =  'M'
-    cBirthday =  '1987-12-26'
-    cEmail = 'bear@superstar.com'
-    cPhone =  '0963245612'
-    cAddr =  '台北市信義路18號'
-    unit = student.objects.create(cName=cName, cSex=cSex, cBirthday=cBirthday, cEmail=cEmail,cPhone=cPhone, cAddr=cAddr) 
-    unit.save()  #寫入資料庫
-    students = student.objects.all().order_by('-id')  #讀取資料表, 依 id 遞減排序
-    return render(request, "listall.html", locals())
-
-def modify(request):  #修改資料
-    unit = student.objects.get(cName='林三和')
-    unit.cBirthday =  '1987-12-11'
-    unit.cAddr = '台北市信義路234號'
-    unit.save()  #寫入資料庫
-    students = student.objects.all().order_by('-id')
-    return render(request, "listall.html", locals())
-
-def delete(request,id=None):  #刪除資料
-    unit = student.objects.get(cName='林三和')
-    unit.delete()
-    students = student.objects.all().order_by('-id')
-    return render(request, "listall.html", locals())
