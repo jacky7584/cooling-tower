@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from django.conf.urls import url
-from first.views import main,POST_crawl,exportPdfWeather,datapiepline,uploadFile
+from first.views import main,exportPdfWeather,uploadFile,featurelist
 urlpatterns = [
     path('admin/', admin.site.urls),
     #hello世界範例1
@@ -28,14 +28,11 @@ urlpatterns = [
     
     #爬蟲範例1
     path('',main),                 #在首頁下執行main函式
-    path('POST_crawl/',POST_crawl), #在POST_crawl頁面執行POST_crawl函式
-
 
 
     #冰水主機首頁
     path('api/exportPdfWeather/', exportPdfWeather),
-    #冰水主機分群分析
-    path('api/datapiepline/', datapiepline),
     #資料上傳處理
     path("api/uploadFile/", uploadFile, name = "uploadFile"),
+    path("api/uploadFile/", featurelist),
 ]
