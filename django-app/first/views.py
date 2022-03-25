@@ -48,9 +48,11 @@ def uploadFile(request):
         document.save()
 
     documents = models.Document.objects.all()
+    dataDictList = get_list()
 	
     return render(request, "datapiepline.html", context = {
-        "files": documents
+        "files": documents,
+		"list": dataDictList
     })
 
 def featurelist(request):
@@ -67,6 +69,9 @@ def exportPdfWeather(request):
     dataDictList = get_data()
     print(dataDictList)
     return render(request,'cooling.html',dataDictList)
+
+def dataAnalytics(request):
+	 return render(request,'dataAnalytics.html')
 
 
 

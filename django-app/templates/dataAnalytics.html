@@ -1,0 +1,73 @@
+<html>
+<head>
+    {% load static %}
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>資料可視化</title>
+    <meta name="description" content="Reading csv file using javascript" />
+    <meta name="author" content="Arkaprava Majumder" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{% static 'js/prepare.js' %}"></script>
+    <script src="{% static 'js/reading-csv-file-using-javascript.js' %}"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+        * {
+            font-family: "Roboto";
+        }
+
+        body {
+            background-color: #F5F5F5;
+        }
+      
+    </style>
+</head>
+<body>
+    <header>
+        <table class="table"  align="center">
+           
+              <tr class="table-warning" align="center">
+                
+                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">首頁</button></th>
+                <th scope="col-6"  ><button type="button" class="btn btn-outline-info" >資料前置處理</button></th>
+                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">分群分析</button></th>
+              </tr>
+          </table>
+        
+      </header>
+    <div>
+        <div class="header">
+            <h2>請讀取CSV檔案</h2>
+        </div>
+        <div class="main">
+            <form class="form-inline">
+                <div class="form-group">
+                    <input type="file" id="files" class="form-control" style="padding:6px; height:unset" required accept=".csv" onchange="checkfile(this);"/>
+                </div>
+                <div class="form-group">
+                    <button type="submit" id="submit" class="btn btn-primary">預覽資料</button>
+                    <button type="submit" id="draw" class="btn btn-primary">圖表展示</button>
+                </div>
+            </form>
+            <div id="app" style="font-size:smaller"></div>
+        </div>
+    </div>
+    <script type="text/javascript" language="javascript">
+        function checkfile(sender) {
+            // 可接受的附檔名
+            var validExts = new Array(".csv");
+            var fileExt = sender.value;
+            fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
+            if (validExts.indexOf(fileExt) < 0) {
+                alert("檔案類型錯誤，可接受的副檔名有：" + validExts.toString());
+                sender.value = null;
+                return false;
+            }
+            else return true;
+        }
+    </script>
+</body>
+</html
