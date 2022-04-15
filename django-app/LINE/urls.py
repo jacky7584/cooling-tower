@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 
 from django.conf.urls import url
-from first.views import main,exportPdfWeather,uploadFile,featurelist,dataAnalytics
+from first.views import main,exportPdfWeather,featurelist,dataAnalytics,showplt
 urlpatterns = [
     path('admin/', admin.site.urls),
     #hello世界範例1
@@ -33,7 +33,7 @@ urlpatterns = [
     #冰水主機首頁
     path('api/exportPdfWeather/', exportPdfWeather),
     #資料上傳處理
-    path("api/uploadFile/", uploadFile, name = "uploadFile"),
     path("api/uploadFile/", featurelist),
     path("api/dataAnalytics/", dataAnalytics),
+    path("api/plot/", showplt),
 ]

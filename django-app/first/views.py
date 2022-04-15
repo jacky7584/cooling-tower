@@ -33,32 +33,8 @@ from django.views.generic import View
 from django.http import HttpResponse
 from . import models
 
-def uploadFile(request):
-
-    if request.method == "POST":
-        # Fetching the form data
-      
-        uploadedFile = request.FILES["uploadedFile"]
-
-        # Saving the information in the database
-        document = models.Document(
-
-            uploadedFile = uploadedFile
-        )
-        document.save()
-
-    documents = models.Document.objects.all()
-    dataDictList = get_list()
-	
-    return render(request, "datapiepline.html", context = {
-        "files": documents,
-		"list": dataDictList
-    })
-
 def featurelist(request):
-    dataDictList = get_list()
-    print(dataDictList)
-    return render(request,'datapiepline.html',dataDictList)
+    return render(request,'datapiepline.html')
 
 
 def main(request):
@@ -72,6 +48,15 @@ def exportPdfWeather(request):
 
 def dataAnalytics(request):
 	 return render(request,'dataAnalytics.html')
+
+
+def showplt(request ):
+	if request.method == "POST":
+		print(0)
+		result = {'State': 'Successful'}
+		print(json.dumps(result))
+
+		return json.dumps(result)
 
 
 

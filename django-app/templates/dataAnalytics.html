@@ -1,30 +1,37 @@
-<html>
+{% load static %}
+<script src="{% static 'js/prepare.js' %}"></script>
+<script src="{% static 'js/reading-csv-file-using-javascript.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<style>
+body {font-family: Arial;}
+
+</style>
     {% load static %}
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>資料可視化</title>
-    <meta name="description" content="Reading csv file using javascript" />
-    <meta name="author" content="Arkaprava Majumder" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">   
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>資料視覺化</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="{% static 'js/prepare.js' %}"></script>
     <script src="{% static 'js/reading-csv-file-using-javascript.js' %}"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-
-        * {
-            font-family: "Roboto";
-        }
-
-        body {
-            background-color: #F5F5F5;
-        }
-      
-    </style>
-</head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+    
+            * {
+                font-family: "Roboto";
+            }
+    
+            body {
+                background-color: #F5F5F5;
+            }
+        </style>
+    </head>
 <body>
     <header>
         <table class="table"  align="center">
@@ -33,7 +40,7 @@
                 
                 <th scope="col-6"  ><button type="button" class="btn btn-outline-info">首頁</button></th>
                 <th scope="col-6"  ><button type="button" class="btn btn-outline-info" >資料前置處理</button></th>
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">分群分析</button></th>
+                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">資料視覺化</button></th>
               </tr>
           </table>
         
@@ -49,8 +56,18 @@
                 </div>
                 <div class="form-group">
                     <button type="submit" id="submit" class="btn btn-primary">預覽資料</button>
-                    <button type="submit" id="draw" class="btn btn-primary">圖表展示</button>
                 </div>
+                <div class="form-group"></div>
+                <h2>圖表選擇</h2>
+                <select class="form-control" style="width:400px" id="draw">
+                    <option class="drop-down" value="折線圖">折線圖</option>
+                    <option class="drop-down" value="長條圖">長條圖</option>
+                    <option class="drop-down" value="四分位圖">四分位圖</option>
+                    <option class="drop-down" value="皮爾森">皮爾森</option>
+                    <option class="drop-down" value="關聯分析">關聯分析</option>
+                </select>
+                </div>
+                <button type="submit" id="show" class="btn btn-primary">顯示圖表</button>
             </form>
             <div id="app" style="font-size:smaller"></div>
         </div>
