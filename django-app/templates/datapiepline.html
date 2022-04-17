@@ -41,31 +41,176 @@ body {font-family: Arial;}
               </tr>
         </table>
       </header>
+      <form class="form-inline" action="api/plot/" method="POST">
+          {% csrf_token %}
       <table class="table-borderless table" align="center">
         <tr >
           <th style="display: flex; flex-direction: row; align-items: center;">
             <div>查詢資料:</div>
-            <select class="form-control" style="width:200px" id="point">
-                <option class="drop-down" value="electricity">電力能耗資料</option>
-                <option class="drop-down" value="ice-water">冰水側資料</option>
-                <option class="drop-down" value="cooling-water">冷卻水側資料</option>
+            <select class="form-control" style="width:200px" name="point">
+                <option class="drop-down"  value="electricity">電力能耗資料</option>
+                <option class="drop-down"  value="ice-water">冰水側資料</option>
+                <option class="drop-down"  value="cooling-water">冷卻水側資料</option>
               </select>
           </th>
           <th>
             查詢時段:  
-            <input type="date" id="firstdate">
+            <input type="date"  name="picker_start" class="form-control" id="picker_start" placeholder="開始日期">
             ~
-            <input type="date" id="enddate" >
-            <button type="submit" id="show" class="btn btn-warning">查詢</button>
+            <input type="date" name="picker_end" class="form-control" id="picker_end" placeholder="結束日期" >
+            <button type="submit" id="check" class="btn btn-warning">查詢</button>
           </th>
-          <th>
-            查詢時段:  
-            <input type="date" id="firstdate">
-            ~
-            <input type="date" id="enddate" >
-            <button type="submit" id="show" class="btn btn-warning">查詢</button>
+        </form>
+        <th>
+            輸出檔案:
+            <button  id="excel" class="btn btn-outline-warning">EXCEL</button>
+            <button  id="pdf" class="btn btn-outline-warning">PDF</button>
           </th>
         </tr>
-  </table>
+      </table>
+      <div>查詢結果</div>
+      {% if  type  == 0 %}
+        <canvas id="electricityChart"></canvas>
+      {% elif  type  == 1 %}
+        <canvas id="ice-waterChart"></canvas>
+      {% elif  type  == 2 %}
+        <canvas id="cooling-waterChart"></canvas>
+      {% endif %}
+      <script type="text/javascript">
+        var ctx = document.getElementById('electricityChart');
+        var data={{Qsum}};
+        var data1={{冷凍噸耗功}};
+        var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels:[{%for data in day%}'{{data}}',{%endfor%}],
+            datasets: [{
+            type: 'line',
+            lineTension: 0,
+            backgroundColor: '#FF5376',
+            borderColor: '#FF5376',
+            fill: false,
+            borderWidth: 2,
+            // Point
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            label: 'Qsum',
+            data: data
+            }, {
+            type: 'line',
+            lineTension: 0,
+            backgroundColor: '#blue',
+            borderColor: '#blue',
+            fill: false,
+            borderWidth: 2,
+            // Point
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            label: '冷凍噸耗功',
+            data: data1,
+
+            }]
+        }
+        }); 
+    </script>
+
+    <script type="text/javascript">
+        var ctx = document.getElementById('ice-waterChart');
+        var data={{冰水出水溫度24}};
+        var data1={{冰水回水溫度24}};
+        var data2={{冰水溫差24}};
+        var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels:[{%for data in day%}'{{data}}',{%endfor%}],
+            datasets: [{
+            type: 'line',
+            lineTension: 0,
+            backgroundColor: '#FF5376',
+            borderColor: '#FF5376',
+            fill: false,
+            borderWidth: 2,
+            // Point
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            label: '冰水出水溫度',
+            data: data
+            }, {
+            type: 'line',
+            lineTension: 0,
+            backgroundColor: '#blue',
+            borderColor: '#blue',
+            fill: false,
+            borderWidth: 2,
+            // Point
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            label: '冰水回水溫度',
+            data: data1,
+            },{
+            type: 'line',
+            lineTension: 0,
+            backgroundColor: '#yellow',
+            borderColor: '#yellow',
+            fill: false,
+            borderWidth: 2,
+            // Point
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            label: '冰水溫差',
+            data: data2,
+            }]
+        }
+        }); 
+    </script>
+      <script type="text/javascript">
+        var ctx = document.getElementById('cooling-waterChart');
+        var data={{冷卻水出水溫度24}};
+        var data1={{冷卻水回水溫度24}};
+        var data2={{冷卻水溫差24}};
+        var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels:[{%for data in day%}'{{data}}',{%endfor%}],
+            datasets: [{
+            type: 'line',
+            lineTension: 0,
+            backgroundColor: '#FF5376',
+            borderColor: '#FF5376',
+            fill: false,
+            borderWidth: 2,
+            // Point
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            label: '冷卻水出水溫度',
+            data: data
+            }, {
+            type: 'line',
+            lineTension: 0,
+            backgroundColor: '#blue',
+            borderColor: '#blue',
+            fill: false,
+            borderWidth: 2,
+            // Point
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            label: '冷卻水回水溫度',
+            data: data1,
+            },{
+            type: 'line',
+            lineTension: 0,
+            backgroundColor: '#yellow',
+            borderColor: '#yellow',
+            fill: false,
+            borderWidth: 2,
+            // Point
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            label: '冷卻水溫差',
+            data: data2,
+            }]
+        }
+        }); 
+    </script>
 </body>
 </html>

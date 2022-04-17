@@ -35,5 +35,5 @@ urlpatterns = [
     #資料上傳處理
     path("api/uploadFile/", featurelist),
     path("api/dataAnalytics/", dataAnalytics),
-    path("api/plot/", showplt),
+    path("api/uploadFile/api/plot/", showplt),
 ]

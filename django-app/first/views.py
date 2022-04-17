@@ -27,6 +27,10 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from lib.get_data import get_data,get_list
 from lib.datapiepline import datapiepliner
+import time # 引入time
+from datetime import datetime
+
+
 
 from django.shortcuts import render
 from django.views.generic import View
@@ -52,11 +56,18 @@ def dataAnalytics(request):
 
 def showplt(request ):
 	if request.method == "POST":
-		print(0)
-		result = {'State': 'Successful'}
-		print(json.dumps(result))
-
-		return json.dumps(result)
+		point=request.POST['point']
+		picker_start=request.POST['picker_start']
+		picker_end=request.POST['picker_end']
+		dataplt=datapiepliner(point,picker_start,picker_end)
+		day=[]
+		first=int(time.mktime( time.strptime(picker_start, "%Y-%m-%d")))
+		end=int(time.mktime( time.strptime(picker_end, "%Y-%m-%d")))
+		for i in range(first,end,86400):
+			realday=datetime.fromtimestamp(i).strftime('%Y-%m-%d') 
+			day.append(realday)
+		dataplt['day']=day
+		return render(request,'datapiepline.html',dataplt)
 
 
 
