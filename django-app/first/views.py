@@ -36,9 +36,23 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.http import HttpResponse
 from . import models
+from .models import field
+from django.http import JsonResponse 
+def test(request):
+    dataDictList = get_data()
+    a = field.objects.all()
+    print(dataDictList)
+    dataDictList['aa']=a
+    return render(request,'dashbord.html',dataDictList)
 
-def featurelist(request):
-    return render(request,'datapiepline.html')
+def test1(request):
+    dataDictList = get_data()
+    a = field.objects.all()
+	#how to get database data
+    #dataDictList['aa']=a
+    print(dataDictList)
+    result = {'State': 'Successful'}
+    return JsonResponse(dataDictList) 
 
 
 def main(request):
@@ -47,7 +61,9 @@ def main(request):
 
 def exportPdfWeather(request):
     dataDictList = get_data()
-    print(dataDictList)
+    a = field.objects.all()
+    print(a)
+    dataDictList['aa']=a
     return render(request,'cooling.html',dataDictList)
 
 def dataAnalytics(request):
@@ -68,6 +84,8 @@ def showplt(request ):
 			day.append(realday)
 		dataplt['day']=day
 		return render(request,'datapiepline.html',dataplt)
+	else:
+		return render(request,'datapiepline.html')
 
 
 

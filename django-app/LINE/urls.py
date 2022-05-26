@@ -17,14 +17,10 @@ from django.contrib import admin
 from django.urls import path
 
 from django.conf.urls import url
-from first.views import main,exportPdfWeather,featurelist,dataAnalytics,showplt
+from first.views import main,exportPdfWeather,dataAnalytics,showplt,test,test1
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #hello世界範例1
-    #url(r'^$', sayhello),
-    #url(r'^hello2/(\w+)/$', hello2),
-    #url(r'^hello3/(\w+)/$', hello3),
-    #url(r'^hello4/(\w+)/$', hello4),
+
     
     #爬蟲範例1
     path('',main),                 #在首頁下執行main函式
@@ -32,8 +28,10 @@ urlpatterns = [
 
     #冰水主機首頁
     path('api/exportPdfWeather/', exportPdfWeather),
+    path('api/test/', test),
+    path('api/test/get', test1),
     #資料上傳處理
-    path("api/uploadFile/", featurelist),
+    path("api/uploadFile/", showplt),
     path("api/dataAnalytics/", dataAnalytics),
     path("api/uploadFile/api/plot/", showplt),
 ]

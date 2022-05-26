@@ -26,6 +26,11 @@ body {font-family: Arial;}
         body {
             background-color: #F5F5F5;
         }
+        #content{
+        height:100%;
+        background-color:#F5F5F5;
+        padding-top:20px;
+        }
     </style>
 </head>
 <body>
@@ -35,13 +40,13 @@ body {font-family: Arial;}
            
               <tr class="table-warning" align="center">
                 
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">首頁</button></th>
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info" >歷史用電量查詢介面</button></th>
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">歷史節能量</button></th>
+                <th scope="col-6"  ><a href="/api/exportPdfWeather/"> <button type="button" class="btn btn-outline-info" >首頁</a></button></th>
+                <th scope="col-6"  ><a href="/api/uploadFile/"><button type="button" class="btn btn-outline-info" >歷史用電量查詢介面</a></button></th>
+                <th scope="col-6"  ><a href="/api/dataAnalytics/"><button type="button" class="btn btn-outline-info">歷史節能量</a></button></th>
               </tr>
         </table>
       </header>
-      <form class="form-inline" action="api/plot/" method="POST">
+      <form class="form-inline"  method="POST">
           {% csrf_token %}
       <table class="table-borderless table" align="center">
         <tr >
@@ -59,6 +64,7 @@ body {font-family: Arial;}
             ~
             <input type="date" name="picker_end" class="form-control" id="picker_end" placeholder="結束日期" >
             <button type="submit" id="check" class="btn btn-warning">查詢</button>
+        
           </th>
         </form>
         <th>
@@ -70,11 +76,11 @@ body {font-family: Arial;}
       </table>
       <div>查詢結果</div>
       {% if  type  == 0 %}
-        <canvas id="electricityChart"></canvas>
+        <canvas id="electricityChart" style="margin-left:20px;"></canvas>
       {% elif  type  == 1 %}
-        <canvas id="ice-waterChart"></canvas>
+        <canvas id="ice-waterChart" style="margin-left:20px;"></canvas>
       {% elif  type  == 2 %}
-        <canvas id="cooling-waterChart"></canvas>
+        <canvas id="cooling-waterChart" style="margin-left:20px;"></canvas>
       {% endif %}
       <script type="text/javascript">
         var ctx = document.getElementById('electricityChart');
@@ -87,7 +93,6 @@ body {font-family: Arial;}
             datasets: [{
             type: 'line',
             lineTension: 0,
-            backgroundColor: '#FF5376',
             borderColor: '#FF5376',
             fill: false,
             borderWidth: 2,
@@ -99,8 +104,7 @@ body {font-family: Arial;}
             }, {
             type: 'line',
             lineTension: 0,
-            backgroundColor: '#blue',
-            borderColor: '#blue',
+            borderColor: '#98DDCA',
             fill: false,
             borderWidth: 2,
             // Point
@@ -115,6 +119,7 @@ body {font-family: Arial;}
     </script>
 
     <script type="text/javascript">
+      
         var ctx = document.getElementById('ice-waterChart');
         var data={{冰水出水溫度24}};
         var data1={{冰水回水溫度24}};
@@ -126,7 +131,6 @@ body {font-family: Arial;}
             datasets: [{
             type: 'line',
             lineTension: 0,
-            backgroundColor: '#FF5376',
             borderColor: '#FF5376',
             fill: false,
             borderWidth: 2,
@@ -138,8 +142,7 @@ body {font-family: Arial;}
             }, {
             type: 'line',
             lineTension: 0,
-            backgroundColor: '#blue',
-            borderColor: '#blue',
+            borderColor: '#98DDCA',
             fill: false,
             borderWidth: 2,
             // Point
@@ -148,10 +151,9 @@ body {font-family: Arial;}
             label: '冰水回水溫度',
             data: data1,
             },{
-            type: 'line',
+            type: 'bar',
             lineTension: 0,
-            backgroundColor: '#yellow',
-            borderColor: '#yellow',
+            borderColor: '#FFD3B4',
             fill: false,
             borderWidth: 2,
             // Point
@@ -165,6 +167,7 @@ body {font-family: Arial;}
     </script>
       <script type="text/javascript">
         var ctx = document.getElementById('cooling-waterChart');
+        document.getElementById('cooling-waterChart').width = 50;
         var data={{冷卻水出水溫度24}};
         var data1={{冷卻水回水溫度24}};
         var data2={{冷卻水溫差24}};
@@ -175,7 +178,6 @@ body {font-family: Arial;}
             datasets: [{
             type: 'line',
             lineTension: 0,
-            backgroundColor: '#FF5376',
             borderColor: '#FF5376',
             fill: false,
             borderWidth: 2,
@@ -187,8 +189,7 @@ body {font-family: Arial;}
             }, {
             type: 'line',
             lineTension: 0,
-            backgroundColor: '#blue',
-            borderColor: '#blue',
+            borderColor: '#98DDCA',
             fill: false,
             borderWidth: 2,
             // Point
@@ -197,10 +198,9 @@ body {font-family: Arial;}
             label: '冷卻水回水溫度',
             data: data1,
             },{
-            type: 'line',
+            type: 'bar',
             lineTension: 0,
-            backgroundColor: '#yellow',
-            borderColor: '#yellow',
+            borderColor: '#FFD3B4',
             fill: false,
             borderWidth: 2,
             // Point
@@ -212,5 +212,6 @@ body {font-family: Arial;}
         }
         }); 
     </script>
+
 </body>
 </html>

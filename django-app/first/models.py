@@ -8,14 +8,22 @@ class student(models.Model):
     cEmail = models.EmailField(max_length=100, blank=True, default='')
     cPhone = models.CharField(max_length=50, blank=True, default='')
     cAddr = models.CharField(max_length=255,blank=True, default='')
- 
-def __str__(self):
-    return self.cName
-
-
-
-# Create your models here.
+ # Create your models here.
 class Document(models.Model):
     title = models.CharField(max_length = 200)
     uploadedFile = models.FileField(upload_to = "Uploaded Files/")
     dateTimeOfUpload = models.DateTimeField(auto_now = True)
+def __str__(self):
+    return self.cName
+
+class field(models.Model):
+    fieldID = models.CharField(max_length=20, null=False)
+    fieldName = models.CharField(max_length=10, null=False)
+    fieldlocation = models.CharField(max_length=255,blank=True, default='')
+    def __str__(self):
+        return self.fieldID+self.fieldName
+
+
+
+
+

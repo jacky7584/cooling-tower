@@ -78,9 +78,19 @@ WSGI_APPLICATION = 'LINE.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'cooling-tower',
+        'HOST':'127.0.0.1',
+        'USER':'django',
+        'PASSWORD':'django10711127',
+        'PORT':'1433',
+        'OPTIONS':{
+            'provider':'SQLOLEDB',
+            'DRIVER':'SQL Server Native Client 11.0',    #原本只有這個
+            'driver':'SQL Server Native Client 11.0',    #新增了這個
+            'use_mars': True,
+        }
+    },
 }
 
 

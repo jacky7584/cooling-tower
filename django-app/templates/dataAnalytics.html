@@ -1,6 +1,5 @@
+
 {% load static %}
-<script src="{% static 'js/prepare.js' %}"></script>
-<script src="{% static 'js/reading-csv-file-using-javascript.js' %}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <html lang="en">
 <head>
@@ -9,82 +8,86 @@
 <style>
 body {font-family: Arial;}
 
+
 </style>
-    {% load static %}
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">   
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>資料視覺化</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="{% static 'js/prepare.js' %}"></script>
-    <script src="{% static 'js/reading-csv-file-using-javascript.js' %}"></script>
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-    
-            * {
-                font-family: "Roboto";
-            }
-    
-            body {
-                background-color: #F5F5F5;
-            }
-        </style>
-    </head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">   
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>歷史節能量查詢介面</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+        * {
+            font-family: "Roboto";
+        }
+
+        body {
+            background-color: #F5F5F5;
+        }
+        #content{
+        height:100%;
+        background-color:#F5F5F5;
+        padding-top:20px;
+        }
+    </style>
+</head>
 <body>
+
     <header>
         <table class="table"  align="center">
            
               <tr class="table-warning" align="center">
                 
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">首頁</button></th>
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info" >資料前置處理</button></th>
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">資料視覺化</button></th>
+                <th scope="col-6"  ><a href="/api/exportPdfWeather/"> <button type="button" class="btn btn-outline-info" >首頁</a></button></th>
+                <th scope="col-6"  ><a href="/api/uploadFile/"><button type="button" class="btn btn-outline-info" >歷史用電量查詢介面</a></button></th>
+                <th scope="col-6"  ><a href="/api/dataAnalytics/"><button type="button" class="btn btn-outline-info">歷史節能量</a></button></th>
               </tr>
-          </table>
-        
+        </table>
       </header>
-    <div>
-        <div class="header">
-            <h2>請讀取CSV檔案</h2>
-        </div>
-        <div class="main">
-            <form class="form-inline">
-                <div class="form-group">
-                    <input type="file" id="files" class="form-control" style="padding:6px; height:unset" required accept=".csv" onchange="checkfile(this);"/>
-                </div>
-                <div class="form-group">
-                    <button type="submit" id="submit" class="btn btn-primary">預覽資料</button>
-                </div>
-                <div class="form-group"></div>
-                <h2>圖表選擇</h2>
-                <select class="form-control" style="width:400px" id="draw">
-                    <option class="drop-down" value="折線圖">折線圖</option>
-                    <option class="drop-down" value="長條圖">長條圖</option>
-                    <option class="drop-down" value="四分位圖">四分位圖</option>
-                    <option class="drop-down" value="皮爾森">皮爾森</option>
-                    <option class="drop-down" value="關聯分析">關聯分析</option>
-                </select>
-                </div>
-                <button type="submit" id="show" class="btn btn-primary">顯示圖表</button>
-            </form>
-            <div id="app" style="font-size:smaller"></div>
-        </div>
-    </div>
-    <script type="text/javascript" language="javascript">
-        function checkfile(sender) {
-            // 可接受的附檔名
-            var validExts = new Array(".csv");
-            var fileExt = sender.value;
-            fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
-            if (validExts.indexOf(fileExt) < 0) {
-                alert("檔案類型錯誤，可接受的副檔名有：" + validExts.toString());
-                sender.value = null;
-                return false;
-            }
-            else return true;
-        }
-    </script>
+      <form class="form-inline"  method="POST">
+          {% csrf_token %}
+      <table class="table-borderless table" align="center">
+        <tr style="display: flex; justify-content: space-around; align-items: center;">
+        <h4 style="color:rgb(255, 145, 0);font-weight:bold;"  align="left" >歷史節能量查詢</h4>
+          <th>
+            查詢時段:  
+            <input type="date"  name="picker_start" class="form-control" id="picker_start" placeholder="開始日期">
+            ~
+            <input type="date" name="picker_end" class="form-control" id="picker_end" placeholder="結束日期" >
+            <button type="submit" id="check" class="btn btn-warning">查詢</button>
+        
+          </th>
+        </form>
+        <th>
+            輸出檔案:
+            <button  id="excel" class="btn btn-outline-warning">EXCEL</button>
+            <button  id="pdf" class="btn btn-outline-warning">PDF</button>
+          </th>
+        </tr>
+      </table>
+      <div>查詢結果</div>
+      <canvas id="example" style="margin-left:20px;"></canvas>
+  <script>
+  	var ctx = document.getElementById( "example" ),
+  		example = new Chart(ctx, {
+  			// 參數設定[註1]
+  			type: "bar", // 圖表類型
+  			data: {
+  				labels: [ "Red", "Green", "Blue" ], // 標題
+  				datasets: [{
+  					label: "# of Votes", // 標籤
+  					data: [ 12, 19, 3 ], // 資料
+  					backgroundColor: [ // 背景色
+  					"#FF0000",
+  					"#00FF00",
+  					"#0000FF",
+  					],
+  					borderWidth: 1 // 外框寬度
+  				}]
+  			}
+  		});
+  </script>
 </body>
-</html
+</html>

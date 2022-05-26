@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+{% load staticfiles %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<link  href="{% static "css/style.css" %}" rel="stylesheet" type="text/css" />
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -31,250 +36,256 @@
         <table class="table"  align="center">
            
               <tr class="table-warning" align="center">
-                
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">首頁</button></th>
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info" >歷史用電量查詢介面</button></th>
-                <th scope="col-6"  ><button type="button" class="btn btn-outline-info">歷史節能量</button></th>
+                <th scope="col-6"  ><a href="/api/exportPdfWeather/"> <button type="button" class="btn btn-outline-info" >首頁</a></button></th>
+                <th scope="col-6"  ><a href="/api/uploadFile/"><button type="button" class="btn btn-outline-info" >歷史用電量查詢介面</a></button></th>
+                <th scope="col-6"  ><a href="/api/dataAnalytics/"><button type="button" class="btn btn-outline-info">歷史節能量</a></button></th>
               </tr>
           </table>
         
-      </header>
-    
-        <div class="container-sm">
-            <div class="row">
-            <div class="col"><!-- ... A部分 ... -->
-                    <div class="card border-warning mb-3" style="width: 20rem; color:rgb(255, 145, 0); background-color: #F5F5F5; "  >
-                    <div class="card-body" >
-                        <h5 class="card-title" style="color:rgb(255, 145, 0);font-weight:bold;" class="shadow-sm p-3 mb-5 bg-body rounded" align="left" >氣溫資訊</h5>
-                        <table class="table align-middle">
-                            <thead>
-                                <tr class="table-warning" align="center">
-                                <th scope="col">當前溫度</th>
-                                <th scope="col">當前濕度</th>
-                                <th scope="col">天氣狀態</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="table-info" align="center">
-                                    <th scope="row" >{{ templist }}&deg;C<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-thermometer-half" viewBox="0 0 16 16">
-                                        <path d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z"/>
-                                        <path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z"/>
-                                        </svg></th>
-                                    <th scope="row">{{ humlist }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-droplet" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0c.109.363.234.708.371 1.038.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8zm.413 1.021A31.25 31.25 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
-                                        <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448z"/>
-                                        </svg></th>
-                                    <th scope="row">{{ Weatherlist }}  {% if  Weatherlist  == "晴" %}
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun" viewBox="0 0 16 16">
-                                                <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
-                                                </svg>
-                                        {% elif  Weatherlist  == "陰" %}
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud" viewBox="0 0 16 16">
-                                                <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
-                                                </svg>
-                                        {% elif  Weatherlist  == "多雲" %}
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clouds-fill" viewBox="0 0 16 16">
-                                                <path d="M11.473 9a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 14h8.5a2.5 2.5 0 1 0-.027-5z"/>
-                                                <path d="M14.544 9.772a3.506 3.506 0 0 0-2.225-1.676 5.502 5.502 0 0 0-6.337-4.002 4.002 4.002 0 0 1 7.392.91 2.5 2.5 0 0 1 1.17 4.769z"/>
-                                            </svg>
-                                        {% endif %}</th>
-                                    
-                                </tr>
-                                <td colspan="3" class="table-active" align="center">現在時間:{{ locationName }}</td>
-                            </tbody>
-                        </table>
-                            {% if  Weatherlist  == "晴" %}
-                            <div style="text-align: center" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-sun" viewBox="0 0 16 16">
-                                    <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
-                                </svg>
-                            </div>
-                            {% elif  Weatherlist  == "陰" %}
-                            <div style="text-align: center" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cloud" viewBox="0 0 16 16">
-                                    <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
-                                </svg>
-                            </div>
-                            {% elif  Weatherlist  == "多雲" %}
-                            <div style="text-align: center" >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-clouds-fill" viewBox="0 0 16 16">
-                                    <path d="M11.473 9a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 14h8.5a2.5 2.5 0 1 0-.027-5z"/>
-                                    <path d="M14.544 9.772a3.506 3.506 0 0 0-2.225-1.676 5.502 5.502 0 0 0-6.337-4.002 4.002 4.002 0 0 1 7.392.91 2.5 2.5 0 0 1 1.17 4.769z"/>
-                                </svg>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
+    </header>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+              <div class="card border-warning mb-3" style="width: 20rem; color:rgb(255, 145, 0); background-color: #F5F5F5; "  >
+                  <div class="card-body" >
+                      <h5 class="card-title" style="color:rgb(255, 145, 0);font-weight:bold;" class="shadow-sm p-3 mb-5 bg-body rounded" align="left" >氣溫資訊</h5>
+                      <table class="table align-middle">
+                          <thead>
+                              <tr class="table-warning" align="center">
+                              <th scope="col">當前溫度</th>
+                              <th scope="col">當前濕度</th>
+                              <th scope="col">天氣狀態</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr class="table-info" align="center">
+                                  <th scope="row" >{{ templist }}&deg;C<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-thermometer-half" viewBox="0 0 16 16">
+                                      <path d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z"/>
+                                      <path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z"/>
+                                      </svg></th>
+                                  <th scope="row">{{ humlist }} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-droplet" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M7.21.8C7.69.295 8 0 8 0c.109.363.234.708.371 1.038.812 1.946 2.073 3.35 3.197 4.6C12.878 7.096 14 8.345 14 10a6 6 0 0 1-12 0C2 6.668 5.58 2.517 7.21.8zm.413 1.021A31.25 31.25 0 0 0 5.794 3.99c-.726.95-1.436 2.008-1.96 3.07C3.304 8.133 3 9.138 3 10a5 5 0 0 0 10 0c0-1.201-.796-2.157-2.181-3.7l-.03-.032C9.75 5.11 8.5 3.72 7.623 1.82z"/>
+                                      <path fill-rule="evenodd" d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448z"/>
+                                      </svg></th>
+                                  <th scope="row">{{ Weatherlist }}  {% if  Weatherlist  == "晴" %}
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sun" viewBox="0 0 16 16">
+                                              <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+                                              </svg>
+                                      {% elif  Weatherlist  == "陰" %}
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud" viewBox="0 0 16 16">
+                                              <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                                              </svg>
+                                      {% elif  Weatherlist  == "多雲" %}
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clouds-fill" viewBox="0 0 16 16">
+                                              <path d="M11.473 9a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 14h8.5a2.5 2.5 0 1 0-.027-5z"/>
+                                              <path d="M14.544 9.772a3.506 3.506 0 0 0-2.225-1.676 5.502 5.502 0 0 0-6.337-4.002 4.002 4.002 0 0 1 7.392.91 2.5 2.5 0 0 1 1.17 4.769z"/>
+                                          </svg>
+                                      {% endif %}</th>
+                                  
+                              </tr>
+                              <td colspan="3" class="table-active" align="center">現在時間:{{ locationName }}</td>
+                          </tbody>
+                      </table>
+                          {% if  Weatherlist  == "晴" %}
+                          <div style="text-align: center" >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-sun" viewBox="0 0 16 16">
+                                  <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+                              </svg>
+                          </div>
+                          {% elif  Weatherlist  == "陰" %}
+                          <div style="text-align: center" >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cloud" viewBox="0 0 16 16">
+                                  <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                              </svg>
+                          </div>
+                          {% elif  Weatherlist  == "多雲" %}
+                          <div style="text-align: center" >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-clouds-fill" viewBox="0 0 16 16">
+                                  <path d="M11.473 9a4.5 4.5 0 0 0-8.72-.99A3 3 0 0 0 3 14h8.5a2.5 2.5 0 1 0-.027-5z"/>
+                                  <path d="M14.544 9.772a3.506 3.506 0 0 0-2.225-1.676 5.502 5.502 0 0 0-6.337-4.002 4.002 4.002 0 0 1 7.392.91 2.5 2.5 0 0 1 1.17 4.769z"/>
+                              </svg>
+                          </div>
+                          {% endif %}
+                      </div>
+                  </div>
+            </div>
+            <div class="col">
+              <div class="card border-warning mb-3" style="width: 20rem;  background-color: #F5F5F5; " >
+                  <div class="card-body" >
+                      <h5 class="card-title" style="color:rgb(255, 145, 0);font-weight:bold;" class="shadow-sm p-3 mb-5 bg-body rounded" align="left" >建議控制參數</h5>
+                      <table class="table">
+                      <thead class="table-primary">
+                          <th scope="col">項目</th>
+                          <th scope="col"></th>
+                          <th scope="col">溫度</th>
+                      </thead>
+                      <tbody>
+                          <tr class="table-info">
+                          <td style="font-weight:bold;">冰水出水</td>
+                          <td></td>
+                          <td style="font-weight:bold;">8&deg;C</td>
+                          </tr>
+  
+                          <tr class="table-info">
+                              <td style="font-weight:bold;">冷卻水回水</td>
+                              <td></td>
+                              <td style="font-weight:bold;">23&deg;C</td>
+                          </tr>
+                      </tbody>
+                      </table> 
+                  </div>  
+              </div>
+            </div>
+            <div class="col">
+              <div class="card border-warning mb-3" style="width: 20rem;  background-color: #F5F5F5; " >
+                  <div class="card-body" >
+                      <h5 class="card-title" style="color:rgb(255, 145, 0);font-weight:bold;" class="shadow-sm p-3 mb-5 bg-body rounded" align="left" >預測數值</h5>
+                      <table class="table table-borderless">
+                          <tbody>
+                              <tr>
+                              <td style="color:rgb(255, 145, 0);">&bull;</td>
+                              <td style="font-weight:bold;">能耗功率</td>
+                              <td style="font-weight:bold;">225kw</td>
+                              </tr>
+                              <tr>
+                                  <td style="color:rgb(255, 145, 0);">&bull;</td>
+                                  <td style="font-weight:bold;">用電量</td>
+                                  <td style="font-weight:bold;">225.5 kw/h</td>
+                              </tr>
+                              <tr>
+                                  <td style="color:rgb(255, 145, 0);">&bull;</td>
+                                  <td style="font-weight:bold;">供冷量</td>
+                                  <td style="font-weight:bold;">150RT</td>
+                              </tr>
+                              <tr>
+                                  <td style="color:rgb(255, 145, 0);">&bull;</td>
+                                  <td style="font-weight:bold;">能效值</td>
+                                  <td style="font-weight:bold;">0.8 KW/RT</td>
+                              </tr>
+                              <tr>
+                                  <td style="color:rgb(255, 145, 0);">&bull;</td>
+                                  <td style="font-weight:bold;">負載情境</td>
+                                  <td style="font-weight:bold;">情境1</td>
+                              </tr>
+                              <tr>
+                                  <td style="color:rgb(255, 145, 0);">&bull;</td>
+                                  <td style="font-weight:bold;">預估節能量</td>
+                                  <td style="font-weight:bold;">5%</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>  
+              </div>
+            </div>
+        </div>
 
-                    <!-- ... B部分 ... -->
-                    <div class="card border-warning mb-3" style="width: 20rem;  background-color: #F5F5F5; " >
-                        <div class="card-body" >
-                            <h5 class="card-title" style="color:rgb(255, 145, 0);font-weight:bold;" class="shadow-sm p-3 mb-5 bg-body rounded" align="left" >建議控制參數</h5>
-                            <table class="table">
-                            <thead class="table-primary">
-                                <th scope="col">項目</th>
-                                <th scope="col"></th>
-                                <th scope="col">溫度</th>
-                            </thead>
-                            <tbody>
-                                <tr class="table-info">
-                                <td style="font-weight:bold;">冰水出水</td>
-                                <td></td>
-                                <td style="font-weight:bold;">8&deg;C</td>
-                                </tr>
-
-                                <tr class="table-info">
-                                    <td style="font-weight:bold;">冷卻水出水</td>
-                                    <td></td>
-                                    <td style="font-weight:bold;">23&deg;C</td>
-                                </tr>
-                            </tbody>
-                            </table> 
-                        </div>  
-                    </div>
-                    </div>  
-            
-            <div class="col"><!-- ... D部分 ... -->
-                    <div class="card border-warning mb-3" style="width: 20rem;  background-color: #F5F5F5;" >
-                    <div class="card-body" >
-                        <h5 class="card-title" style="color:rgb(255, 145, 0);font-weight:bold;" class="shadow-sm p-3 mb-5 bg-body rounded" align="left" >負載資訊</h5>
-                        <table class="table">
-                            <thead class="table-primary">
-                                <th scope="col">冰水</th>
-                                <th scope="col"></th>
-                                <th scope="col">溫度</th>
-                            </thead>
-                            <tbody>
-                            <tr class="table-info">
-                                <td>出水</td>
-                                <td></td>
-                                <td>8&deg;C</td>
-                            </tr>
-                            <tr class="table-info">
-                                <td>回水 </td>
-                                <td></td>
-                                <td>11&deg;C</td>
-                            </tr>
-                            </tbody>
-                            <thead class="table-primary">
-                                <th scope="col">冷卻水</th>
-                                <th scope="col"></th>
-                                <th scope="col">溫度</th>
-                            </thead>
-                            <tbody>
-                            <tr class="table-info">
-                                <td>出水</td>
-                                <td></td>
-                                <td>8&deg;C</td>
-                            </tr>
-                            <tr class="table-info">
-                                <td style="font-weight:bold;">回水</td>
-                                <td></td>
-                                <td style="font-weight:bold;">11&deg;C</td>
-                            </tr>
-                            </tbody>
-                        </table> 
-                    </div>  
-                    </div>
-                </div> 
-                <div class="col"><!-- ... E部分 ... -->
-                    <div class="card border-warning mb-3" style="width: 20rem;  background-color: #F5F5F5;" >
+        <div class="row">
+            <div class="col">
+                <div class="card border-warning mb-3" style="width: 20rem;  background-color: #F5F5F5;" >
                     <div class="card-body" >
                         <h5 class="card-title" style="color:rgb(255, 145, 0);font-weight:bold;" class="shadow-sm p-3 mb-5 bg-body rounded" align="left" >當前水溫資訊</h5>
-                        <table class="table">
-                            <thead class="table-primary">
-                                <th scope="col">冰水</th>
-                                <th scope="col"></th>
-                                <th scope="col">溫度</th>
-                            </thead>
-                            <tbody>
-                            <tr class="table-info">
-                                <td style="font-weight:bold;">出水</td>
-                                <td></td>
-                                <td style="font-weight:bold;">8&deg;C</td>
-                            </tr>
-                            <tr class="table-info">
-                                <td style="font-weight:bold;">回水 </td>
-                                <td></td>
-                                <td style="font-weight:bold;">11&deg;C</td>
-                            </tr>
-                            </tbody>
-                            <thead class="table-primary">
-                                <th scope="col">冷卻水</th>
-                                <th scope="col"></th>
-                                <th scope="col">溫度</th>
-                            </thead>
-                            <tbody>
-                            <tr class="table-info">
-                                <td style="font-weight:bold;">出水</td>
-                                <td></td>
-                                <td style="font-weight:bold;">8&deg;C</td>
-                            </tr>
-                            <tr class="table-info">
-                                <td style="font-weight:bold;">回水</td>
-                                <td></td>
-                                <td style="font-weight:bold;">11&deg;C</td>
-                            </tr>
-                            </tbody>
-                        </table> 
-                    </div>  
-                    </div>
-                </div>  
-            </div>
-                
-
-            <div class="row">
-                <div class="col"><!-- ... C部分 ... -->
-                    <div class="card border-warning mb-3" style="width: 20rem;   background-color: #F5F5F5;" >
-                        <div class="card-body" >
-                            <h5 class="card-title" style="color:rgb(255, 145, 0);font-weight:bold;" class="shadow-sm p-3 mb-5 bg-body rounded" align="left" >預測數值</h5>
-                            <table class="table table-borderless">
+                            <table class="table">
+                                <thead class="table-primary">
+                                    <th scope="col">冰水</th>
+                                    <th scope="col"></th>
+                                    <th scope="col">溫度</th>
+                                </thead>
                                 <tbody>
-                                    <tr>
-                                    <td style="color:rgb(255, 145, 0);">&bull;</td>
-                                    <td style="font-weight:bold;">能耗功率</td>
-                                    <td style="font-weight:bold;">225kw</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:rgb(255, 145, 0);">&bull;</td>
-                                        <td style="font-weight:bold;">用電量</td>
-                                        <td style="font-weight:bold;">225.5 kw/h</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:rgb(255, 145, 0);">&bull;</td>
-                                        <td style="font-weight:bold;">供冷量</td>
-                                        <td style="font-weight:bold;">150RT</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:rgb(255, 145, 0);">&bull;</td>
-                                        <td style="font-weight:bold;">能效值</td>
-                                        <td style="font-weight:bold;">0.8 KW/RT</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:rgb(255, 145, 0);">&bull;</td>
-                                        <td style="font-weight:bold;">負載情境</td>
-                                        <td style="font-weight:bold;">情境1</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="color:rgb(255, 145, 0);">&bull;</td>
-                                        <td style="font-weight:bold;">預估節能量</td>
-                                        <td style="font-weight:bold;">5%</td>
-                                    </tr>
+                                <tr class="table-info">
+                                    <td style="font-weight:bold;">出水</td>
+                                    <td></td>
+                                    <td style="font-weight:bold;">8&deg;C</td>
+                                </tr>
+                                <tr class="table-info">
+                                    <td style="font-weight:bold;">回水 </td>
+                                    <td></td>
+                                    <td style="font-weight:bold;">11&deg;C</td>
+                                </tr>
                                 </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>  
-    </div>
-<body>
+                                <thead class="table-primary">
+                                    <th scope="col">冷卻水</th>
+                                    <th scope="col"></th>
+                                    <th scope="col">溫度</th>
+                                </thead>
+                                <tbody>
+                                <tr class="table-info">
+                                    <td style="font-weight:bold;">出水</td>
+                                    <td></td>
+                                    <td style="font-weight:bold;">8&deg;C</td>
+                                </tr>
+                                <tr class="table-info">
+                                    <td style="font-weight:bold;">回水</td>
+                                    <td></td>
+                                    <td style="font-weight:bold;">11&deg;C</td>
+                                </tr>
+                                </tbody>
+                            </table> 
+                    </div>  
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-warning mb-3" style="width: 45rem;  background-color: #F5F5F5;" >
+                    <div class="card-body" >
+                        <h5 class="card-title" style="color:rgb(255, 145, 0);font-weight:bold;" class="shadow-sm p-3 mb-5 bg-body rounded" align="left" >負載資訊</h5>
+                            <table class="table">
+                                <thead class="table-warning" align="center">
+                                    <th scope="col">最小負載</th>
+                                    <th scope="col">最高負載</th>
+                                    <th scope="col">平均負載</th>
+                                </thead>
+                                <tbody>
+                                <tr class="table-info" align="center">
+                                    <td>150</td>
+                                    <td>350</td>
+                                    <td>250</td>
+                                </tr>
+                                </tbody>
+                                <td colspan="3" class="table-info" align="center">累積用電:354</td>
+                            </table> 
+                              <canvas id="example"></canvas>        
+                    </div>  
+                </div>
+            </div>  
+        </div>
+    </div>  
+</body>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
       integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
       crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
       integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
       crossorigin="anonymous"></script>
+<script src="{% static 'js/script.js' %}"></script>
+<script>
+    function myrefresh() {
+    window.location.reload();
+    }
+    setInterval('myrefresh()', 300000); //指定1秒刷新一次
+</script>
 
-      
+<script>
+    
+    var ctx = document.getElementById( "example" ),
+        example = new Chart(ctx, {
+            // 參數設定[註1]
+            type: "line", // 圖表類型
+            data: {
+                labels: [ "Red", "Green", "Blue" ], // 標題
+                datasets: [{
+                    label: "# of Votes", // 標籤
+                    data: [ 12, 19, 3 ], // 資料
+                    backgroundColor: [ // 背景色
+                    "#FF0000",
+                    "#00FF00",
+                    "#0000FF",
+                    ],
+                    borderWidth: 1 // 外框寬度
+                }]
+            }
+        });
+</script>
+
 </body>
 </html>
 
